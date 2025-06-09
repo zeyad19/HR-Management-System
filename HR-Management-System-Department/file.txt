@@ -1,0 +1,8 @@
+clone Repository : https://github.com/zeyad19/HR-Management-System.git
+--- you should download composer 
+link : https://getcomposer.org/
+.env.example
+composer install
+php artisan migrate
+php artisan serve
+    
