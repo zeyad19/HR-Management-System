@@ -68,17 +68,16 @@ class EmployeeController extends Controller
 
         $employee = Employee::create($validatedData);
 
-        // إنشاء GeneralSetting تلقائياً مع قيم افتراضية (يمكنك تعديل القيم حسب النظام)
         GeneralSetting::create([
             'employee_id' => $employee->id,
             'weekend_days' => $employee->weekend_days,
-            'deduction_type' => 'money',  // مثال
+            'deduction_type' => 'money',  
             'deduction_value' => 0,
-            'overtime_type' => 'money',  // مثال
+            'overtime_type' => 'money',  
             'overtime_value' => 0,
         ]);
 
-        // إنشاء Payroll للشهر الحالي بقيم مبدئية
+    
         Payroll::create([
             'employee_id' => $employee->id,
             'month' => now()->format('Y-m'),
@@ -190,7 +189,7 @@ class EmployeeController extends Controller
             );
         }
 
-        // ممكن تضيف هنا منطق إعادة حساب الرواتب (Payroll) لو عندك دالة خاصة
+     
 
         return response()->json([
             'message' => 'Employee updated successfully.',

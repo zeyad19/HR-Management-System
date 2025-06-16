@@ -13,56 +13,52 @@ use App\Models\GeneralSetting;
 
 class PayrollController extends Controller
 {
-    public function allEmployeesData()
-    {
-        $employees = Employee::with(['department', 'generalSetting', 'latestPayroll'])->get();
-        
-
-        $data = $employees->map(function ($employee) {
-            $payroll = $employee->latestPayroll;
-
-            return [
-                'id' => $employee->id,
-                'first_name' => $employee->first_name,
-                'last_name' => $employee->last_name,
-                'full_name' => "{$employee->first_name} {$employee->last_name}",
-                'email' => $employee->email,
-                'salary' => $employee->salary,
-                'working_hours_per_day' => $employee->working_hours_per_day,
-               'profile_image_url' => $employee->profileImageUrl,
-
-
-               'dep_name' => optional($employee->department)->dept_name,
-
-               'general_settings' => [
-    'weekend_days' => optional($employee->generalSetting)->weekend_days ?? [],
-    'deduction_type' => optional($employee->generalSetting)->deduction_type,
-    'deduction_value' => optional($employee->generalSetting)->deduction_value,
-    'overtime_type' => optional($employee->generalSetting)->overtime_type,
-    'overtime_value' => optional($employee->generalSetting)->overtime_value,
-],
-
-                'payroll' => $payroll ? [
-                    'month' => $payroll->month,
-                    'month_days' => $payroll->month_days,
-                    'attended_days' => $payroll->attended_days,
-                    'absent_days' => $payroll->absent_days,
-                    'total_overtime' => $payroll->total_overtime,
-                    'total_bonus_amount' => $payroll->total_bonus_amount,
-                    'total_late_hours' => $payroll->total_late_hours,
-                    'total_deduction_amount' => $payroll->total_deduction_amount,
-                    'net_salary' => $payroll->net_salary,
-                    'absence_deduction_amount' => $payroll->absence_deduction_amount,
-                    'late_deduction_amount' => $payroll->late_deduction_amount,
-                ] : null,
-            ];
-        });
-
-        return response()->json([
-            'success' => true,
-            'data' => $data
-        ]);
-    }
+public function allEmployeesData()
+{
+    $employees = Employee::with(['department', 'generalSetting', 'latestPayroll'])->get();
+    $data = $employees->map(function ($employee) {
+        $payroll = $employee->latestPayroll;
+        return [
+            'id' => $employee->id,
+            'first_name' => $employee->first_name,
+            'last_name' => $employee->last_name,
+            'full_name' => "{$employee->first_name} {$employee->last_name}",
+            'email' => $employee->email,
+            'salary' => $employee->salary,
+            'working_hours_per_day' => $employee->working_hours_per_day,
+            'profile_image_url' => $employee->profileImageUrl,
+            'dep_name' => optional($employee->department)->dept_name,
+            'default_check_in_time' => $employee->default_check_in_time,
+            'default_check_out_time' => $employee->default_check_out_time,
+            'gender' => $employee->gender,
+            'nationality' => $employee->nationality,
+            'general_settings' => [
+                'weekend_days' => optional($employee->generalSetting)->weekend_days ?? [],
+                'deduction_type' => optional($employee->generalSetting)->deduction_type ?? 'money',
+                'deduction_value' => optional($employee->generalSetting)->deduction_value ?? 0,
+                'overtime_type' => optional($employee->generalSetting)->overtime_type ?? 'money',
+                'overtime_value' => optional($employee->generalSetting)->overtime_value ?? 0,
+            ],
+            'payroll' => $payroll ? [
+                'month' => $payroll->month,
+                'month_days' => $payroll->month_days,
+                'attended_days' => $payroll->attended_days,
+                'absent_days' => $payroll->absent_days,
+                'total_overtime' => $payroll->total_overtime,
+                'total_bonus_amount' => $payroll->total_bonus_amount,
+                'total_late_hours' => $payroll->total_late_hours,
+                'total_deduction_amount' => $payroll->total_deduction_amount,
+                'net_salary' => $payroll->net_salary,
+                'absence_deduction_amount' => $payroll->absence_deduction_amount,
+                'late_deduction_amount' => $payroll->late_deduction_amount,
+            ] : null,
+        ];
+    });
+    return response()->json([
+        'success' => true,
+        'data' => $data
+    ]);
+}
 
     public function summary(Request $request)
     {

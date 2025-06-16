@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 class AttendenceController extends Controller
 {
     /**
-     * Retrieve a list of attendance records with optional filters.
+     * Display a listing of the attendance records with optional filters.
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse

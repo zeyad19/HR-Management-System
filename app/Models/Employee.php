@@ -4,10 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Department;
-use App\Models\Attendence;
-use App\Models\Payroll;
-use App\Models\GeneralSetting;
 
 class Employee extends Model
 {
@@ -34,6 +30,10 @@ class Employee extends Model
         'salary_per_hour' => 0,
     ];
 
+    protected $hidden = []; // Ensure no fields are hidden
+
+    protected $appends = ['general_setting_data'];
+
     // Relations
     public function department()
     {
@@ -49,7 +49,6 @@ class Employee extends Model
     {
         return $this->hasMany(Payroll::class);
     }
-    
 
     public function latestPayroll()
     {
@@ -72,14 +71,22 @@ class Employee extends Model
         return $this->department ? $this->department->dept_name : null;
     }
 
-public function getProfileImageUrlAttribute()
-{
-    if (!$this->profile_picture) {
-        return null;
+    public function getProfileImageUrlAttribute()
+    {
+        if (!$this->profile_picture) {
+            return null;
+        }
+        return asset('employees/' . $this->profile_picture);
     }
 
-    return asset('employees/' . $this->profile_picture);
-}
-
-
+    public function getGeneralSettingDataAttribute()
+    {
+        return [
+            'deduction_type' => optional($this->generalSetting)->deduction_type ?? 'money',
+            'deduction_value' => optional($this->generalSetting)->deduction_value ?? 0,
+            'overtime_type' => optional($this->generalSetting)->overtime_type ?? 'money',
+            'overtime_value' => optional($this->generalSetting)->overtime_value ?? 0,
+            'weekend_days' => optional($this->generalSetting)->weekend_days ?? [],
+        ];
+    }
 }
