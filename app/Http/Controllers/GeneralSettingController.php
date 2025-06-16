@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\GeneralSetting;
 use Illuminate\Http\Request;
 use App\Models\Employee;
-
+use Illuminate\Support\Facades\Storage;
 class GeneralSettingController extends Controller
 {
     // Retrieve the first general setting record
@@ -110,14 +110,33 @@ if ($employee) {
 
     // Delete general setting by ID
     public function destroy($id)
-    {
-        $setting = GeneralSetting::findOrFail($id);
-        $setting->delete();
+{
+    $employee = Employee::findOrFail($id);
+
+    try {
+        // Delete profile picture if it exists
+        if ($employee->profile_picture && Storage::disk('public')->exists($employee->profile_picture)) {
+            Storage::disk('public')->delete($employee->profile_picture);
+        }
+
+        // Delete related records
+        $employee->generalSetting()->delete();
+        $employee->payrolls()->delete();
+        $employee->attendances()->delete();
+
+        // Delete the employee
+        $employee->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'General setting deleted successfully.'
-        ]);
+            'message' => 'Employee and related records deleted successfully.'
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to delete employee: ' . $e->getMessage()
+        ], 500);
     }
+}
 }
 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\Department;
+use App\Models\GeneralSetting;
+use App\Models\Payroll;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -31,6 +33,7 @@ class EmployeeController extends Controller
     /**
      * Store a new employee record in the database.
      * Handle validation, image upload, and save all employee data.
+     * Also create default GeneralSetting and Payroll records.
      */
     public function store(Request $request)
     {
@@ -61,14 +64,39 @@ class EmployeeController extends Controller
             $validatedData['profile_picture'] = $path;
         }
 
-        // Default empty array if weekend_days not provided
         $validatedData['weekend_days'] = $validatedData['weekend_days'] ?? [];
 
         $employee = Employee::create($validatedData);
 
+        // إنشاء GeneralSetting تلقائياً مع قيم افتراضية (يمكنك تعديل القيم حسب النظام)
+        GeneralSetting::create([
+            'employee_id' => $employee->id,
+            'weekend_days' => $employee->weekend_days,
+            'deduction_type' => 'money',  // مثال
+            'deduction_value' => 0,
+            'overtime_type' => 'money',  // مثال
+            'overtime_value' => 0,
+        ]);
+
+        // إنشاء Payroll للشهر الحالي بقيم مبدئية
+        Payroll::create([
+            'employee_id' => $employee->id,
+            'month' => now()->format('Y-m'),
+            'month_days' => now()->daysInMonth,
+            'attended_days' => 0,
+            'absent_days' => 0,
+            'total_overtime' => 0,
+            'total_bonus_amount' => 0,
+            'total_late_hours' => 0,
+            'total_deduction_amount' => 0,
+            'net_salary' => $employee->salary,
+            'absence_deduction_amount' => 0,
+            'late_deduction_amount' => 0,
+        ]);
+
         return response()->json([
             'message' => 'Employee added successfully.',
-            'employee' => $employee
+            'employee' => $employee->load('department', 'generalSetting', 'latestPayroll')
         ], 201);
     }
 
@@ -77,7 +105,7 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
-        $employee = Employee::with('department')->findOrFail($id);
+        $employee = Employee::with('department', 'generalSetting', 'latestPayroll')->findOrFail($id);
         return response()->json($employee, 200);
     }
 
@@ -86,7 +114,7 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        $employee = Employee::findOrFail($id);
+        $employee = Employee::with('generalSetting')->findOrFail($id);
         $departments = Department::all();
 
         return response()->json([
@@ -98,6 +126,7 @@ class EmployeeController extends Controller
     /**
      * Update employee data partially or fully.
      * Handle profile picture replacement if uploaded.
+     * Also update related GeneralSetting and optionally recalculate Payroll.
      */
     public function update(Request $request, $id)
     {
@@ -122,9 +151,17 @@ class EmployeeController extends Controller
             'weekend_days.*' => 'in:Friday,Saturday,Sunday,Monday,Tuesday,Wednesday,Thursday',
             'working_hours_per_day' => 'sometimes|required|integer|min:1|max:24',
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+
+            // GeneralSetting fields if sent
+            'general_setting.deduction_type' => 'nullable|string',
+            'general_setting.deduction_value' => 'nullable|numeric|min:0',
+            'general_setting.overtime_type' => 'nullable|string',
+            'general_setting.overtime_value' => 'nullable|numeric|min:0',
+            'general_setting.weekend_days' => 'nullable|array',
+            'general_setting.weekend_days.*' => 'in:Friday,Saturday,Sunday,Monday,Tuesday,Wednesday,Thursday',
         ]);
 
-        // Handle new profile picture upload and delete old image if exists
+        // Handle profile picture upload
         if ($request->hasFile('profile_picture') && $request->file('profile_picture')->isValid()) {
             if ($employee->profile_picture && Storage::disk('public')->exists($employee->profile_picture)) {
                 Storage::disk('public')->delete($employee->profile_picture);
@@ -140,31 +177,53 @@ class EmployeeController extends Controller
 
         $employee->update($validatedData);
 
+        // تحديث GeneralSetting إذا أرسل في الطلب
+        if ($request->has('general_setting')) {
+            $gsData = $request->input('general_setting');
+            // ادمج weekend_days من employee لو لم تُرسل
+            if (!array_key_exists('weekend_days', $gsData)) {
+                $gsData['weekend_days'] = $employee->weekend_days;
+            }
+            $employee->generalSetting()->updateOrCreate(
+                ['employee_id' => $employee->id],
+                $gsData
+            );
+        }
+
+        // ممكن تضيف هنا منطق إعادة حساب الرواتب (Payroll) لو عندك دالة خاصة
+
         return response()->json([
             'message' => 'Employee updated successfully.',
-            'employee' => $employee
+            'employee' => $employee->load('department', 'generalSetting', 'latestPayroll')
         ], 200);
     }
 
-    /**
-     * Delete an employee record and their profile picture from storage.
-     */
-    public function destroy($id)
-    {
-        $employee = Employee::findOrFail($id);
+  
+public function destroy($id)
+{
+    $employee = Employee::findOrFail($id);
 
+    try {
+        // Delete profile picture if it exists
         if ($employee->profile_picture && Storage::disk('public')->exists($employee->profile_picture)) {
             Storage::disk('public')->delete($employee->profile_picture);
         }
 
+        
         $employee->delete();
 
-        return response()->json(['message' => 'Employee deleted successfully.'], 200);
+        return response()->json([
+            'success' => true,
+            'message' => 'Employee and related records deleted successfully.'
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to delete employee: ' . $e->getMessage()
+        ], 500);
     }
-
-    /**
-     * Search employees by full name or national ID with pagination.
-     */
+}
+   
     public function search(Request $request)
     {
         $request->validate([

@@ -34,13 +34,14 @@ class PayrollController extends Controller
 
                'dep_name' => optional($employee->department)->dept_name,
 
-                'general_settings' => [
-                    'weekend_days' => $employee->generalSetting->weekend_days ?? [],
-                    'deduction_type' => $employee->generalSetting->deduction_type,
-                    'deduction_value' => $employee->generalSetting->deduction_value,
-                    'overtime_type' => $employee->generalSetting->overtime_type,
-                    'overtime_value' => $employee->generalSetting->overtime_value,
-                ],
+               'general_settings' => [
+    'weekend_days' => optional($employee->generalSetting)->weekend_days ?? [],
+    'deduction_type' => optional($employee->generalSetting)->deduction_type,
+    'deduction_value' => optional($employee->generalSetting)->deduction_value,
+    'overtime_type' => optional($employee->generalSetting)->overtime_type,
+    'overtime_value' => optional($employee->generalSetting)->overtime_value,
+],
+
                 'payroll' => $payroll ? [
                     'month' => $payroll->month,
                     'month_days' => $payroll->month_days,
@@ -107,24 +108,55 @@ class PayrollController extends Controller
         ]);
     }
 
-    // باقي دوالك زي recalculate موجودة فعلاً بدون تعديل...
-    
-    public function recalculate(Request $request)
+    public function Destroy(Request $request)
     {
         $request->validate([
             'employee_id' => 'required|exists:employees,id',
             'month' => 'required|date_format:Y-m',
         ]);
 
-        $employee = Employee::with('generalSetting')->find($request->employee_id);
-        $generalSettings = $employee->generalSetting;
+        $payroll = Payroll::where('employee_id', $request->employee_id)
+            ->where('month', $request->month)
+            ->first();
 
-        if (!$generalSettings) {
+        if (!$payroll) {
             return response()->json([
                 'success' => false,
-                'message' => 'Employee settings not found.'
-            ], 400);
+                'message' => 'Payroll record not found.'
+            ], 404);
         }
+
+        $payroll->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Payroll record deleted successfully.'
+        ]);
+    }
+
+    
+public function recalculate(Request $request)
+{
+    $request->validate([
+        'employee_id' => 'required|exists:employees,id',
+        'month' => 'required|date_format:Y-m',
+    ]);
+
+    $employee = Employee::with('generalSetting')->find($request->employee_id);
+    $generalSettings = $employee->generalSetting;
+
+    if (!$generalSettings) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Employee settings not found.'
+        ], 400);
+    }
+
+    try {
+        // Check if a payroll record already exists for this employee and month
+        $existingPayroll = Payroll::where('employee_id', $employee->id)
+            ->where('month', $request->month)
+            ->first();
 
         $monthStart = Carbon::createFromFormat('Y-m', $request->month)->startOfMonth();
         $monthEnd = $monthStart->copy()->endOfMonth();
@@ -156,33 +188,63 @@ class PayrollController extends Controller
         $absence_deduction_amount = $this->round2($absentDays * $daily_rate);
         $overtime_value = $this->round2($this->calculateOvertime($totalOvertime, $generalSettings->overtime_type, $generalSettings->overtime_value, $salaryPerHour));
 
-        $total_deduction_amount = $this->round2($absence_deduction_amount + $late_deduction_amount);
-        $net_salary = $this->round2(max(0, $employee->salary - $total_deduction_amount + $overtime_value));
+        // Minimum attendance days
+        $minimumAttendanceDays = 5;
 
-        $payroll = Payroll::updateOrCreate(
-            [
+        // If the number of attended days is less than or equal to the minimum, set net salary to 0
+        if ($attendedDays <= $minimumAttendanceDays) {
+            $absence_deduction_amount = $employee->salary; // Deduct the full salary
+            $late_deduction_amount = 0;
+            $overtime_value = 0;
+            $total_deduction_amount = $employee->salary;
+            $net_salary = 0;
+        } else {
+            $total_deduction_amount = $this->round2($absence_deduction_amount + $late_deduction_amount);
+            $net_salary = $this->round2(max(0, $employee->salary - $total_deduction_amount + $overtime_value));
+        }
+
+        // Prepare payroll data
+        $payrollData = [
+            'month_days' => $businessDays,
+            'attended_days' => $attendedDays,
+            'absent_days' => $absentDays,
+            'total_overtime' => $totalOvertime,
+            'total_bonus_amount' => $overtime_value,
+            'total_late_hours' => $totalLate,
+            'total_deduction_amount' => $total_deduction_amount,
+            'net_salary' => $net_salary,
+            'absence_deduction_amount' => $absence_deduction_amount,
+            'late_deduction_amount' => $late_deduction_amount,
+        ];
+
+        // Update or create payroll record
+        if ($existingPayroll) {
+            $existingPayroll->update($payrollData);
+            $payroll = $existingPayroll;
+            $message = $attendedDays <= $minimumAttendanceDays ? 'Net salary is 0 due to insufficient attendance days.' : 'Payroll updated successfully.';
+        } else {
+            $payroll = Payroll::create(array_merge([
                 'employee_id' => $employee->id,
                 'month' => $request->month,
-            ],
-            [
-                'month_days' => $businessDays,
-                'attended_days' => $attendedDays,
-                'absent_days' => $absentDays,
-                'total_overtime' => $totalOvertime,
-                'total_bonus_amount' => $overtime_value,
-                'total_late_hours' => $totalLate,
-                'total_deduction_amount' => $total_deduction_amount,
-                'net_salary' => $net_salary,
-                'absence_deduction_amount' => $absence_deduction_amount,
-                'late_deduction_amount' => $late_deduction_amount,
-            ]
-        );
+            ], $payrollData));
+            $message = $attendedDays <= $minimumAttendanceDays ? 'Net salary is 0 due to insufficient attendance days.' : 'Payroll calculated successfully.';
+        }
 
         return response()->json([
             'success' => true,
-            'data' => $payroll
+            'data' => $payroll,
+            'message' => $message
         ]);
+    } catch (\Illuminate\Database\QueryException $e) {
+        if ($e->getCode() == 23000) {
+            return response()->json([
+                'success' => false,
+                'message' => 'A payroll record for this employee and month already exists.'
+            ], 409);
+        }
+        throw $e;
     }
+}
 
     private function calculateDeduction($totalLate, $deduction_type, $deduction_value, $salaryPerHour)
     {
