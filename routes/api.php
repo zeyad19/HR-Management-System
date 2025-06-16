@@ -34,6 +34,8 @@ Route::middleware('auth:sanctum')->group(function () {
    Route::prefix('payroll')->group(function () {
     Route::get('/show', [PayrollController::class, 'show']);
     Route::get('/summary', [PayrollController::class, 'summary']);
+    Route::get('/all-employees-data', [PayrollController::class, 'allEmployeesData']);
+    
     Route::post('/recalculate', [PayrollController::class, 'recalculate']);
     Route::get('/all', [PayrollController::class, 'allPayrolls']); // الجديد هنا
 });

@@ -13,58 +13,56 @@ use App\Models\GeneralSetting;
 
 class PayrollController extends Controller
 {
-    // Show payroll data for specific employee and month
-    public function show(Request $request)
+    public function allEmployeesData()
     {
-        $request->validate([
-            'employee_id' => 'required|exists:employees,id',
-            'month' => 'required|date_format:Y-m',
-        ]);
+        $employees = Employee::with(['department', 'generalSetting', 'latestPayroll'])->get();
+        
 
-        $payroll = Payroll::with('employee.department')->where('employee_id', $request->employee_id)
-            ->where('month', $request->month)
-            ->first();
+        $data = $employees->map(function ($employee) {
+            $payroll = $employee->latestPayroll;
 
-        if (!$payroll) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Payroll data not found for this employee and month.'
-            ], 404);
-        }
+            return [
+                'id' => $employee->id,
+                'first_name' => $employee->first_name,
+                'last_name' => $employee->last_name,
+                'full_name' => "{$employee->first_name} {$employee->last_name}",
+                'email' => $employee->email,
+                'salary' => $employee->salary,
+                'working_hours_per_day' => $employee->working_hours_per_day,
+               'profile_image_url' => $employee->profileImageUrl,
 
-        // Return payroll data with employee full name, department, and profile picture
+
+               'dep_name' => optional($employee->department)->dept_name,
+
+                'general_settings' => [
+                    'weekend_days' => $employee->generalSetting->weekend_days ?? [],
+                    'deduction_type' => $employee->generalSetting->deduction_type,
+                    'deduction_value' => $employee->generalSetting->deduction_value,
+                    'overtime_type' => $employee->generalSetting->overtime_type,
+                    'overtime_value' => $employee->generalSetting->overtime_value,
+                ],
+                'payroll' => $payroll ? [
+                    'month' => $payroll->month,
+                    'month_days' => $payroll->month_days,
+                    'attended_days' => $payroll->attended_days,
+                    'absent_days' => $payroll->absent_days,
+                    'total_overtime' => $payroll->total_overtime,
+                    'total_bonus_amount' => $payroll->total_bonus_amount,
+                    'total_late_hours' => $payroll->total_late_hours,
+                    'total_deduction_amount' => $payroll->total_deduction_amount,
+                    'net_salary' => $payroll->net_salary,
+                    'absence_deduction_amount' => $payroll->absence_deduction_amount,
+                    'late_deduction_amount' => $payroll->late_deduction_amount,
+                ] : null,
+            ];
+        });
+
         return response()->json([
             'success' => true,
-            'data' => [
-                'payroll' => $payroll,
-                'employee_full_name' => $payroll->employee->first_name . ' ' . $payroll->employee->last_name,
-                'department_name' => optional($payroll->employee->department)->name,
-                'profile_picture' => $payroll->employee->profile_picture
-            ]
+            'data' => $data
         ]);
     }
-    // Get all payroll records for all employees
-public function allPayrolls()
-{
-    $payrolls = Payroll::with('employee.department')->get();
 
-    $data = $payrolls->map(function ($payroll) {
-        return [
-            'payroll' => $payroll,
-            'employee_full_name' => $payroll->employee->first_name . ' ' . $payroll->employee->last_name,
-            'department_name' => optional($payroll->employee->department)->name,
-            'profile_picture' => $payroll->employee->profile_picture
-        ];
-    });
-
-    return response()->json([
-        'success' => true,
-        'data' => $data
-    ]);
-}
-
-
-    // Get payroll list with filters
     public function summary(Request $request)
     {
         $request->validate([
@@ -85,13 +83,21 @@ public function allPayrolls()
             ->when($request->start_date && $request->end_date, fn($q) => $q->whereBetween('created_at', [$request->start_date, $request->end_date]))
             ->get();
 
-        // Format response with full name, department, and profile picture
         $data = $payrolls->map(function ($payroll) {
             return [
-                'payroll' => $payroll,
-                'employee_full_name' => $payroll->employee->first_name . ' ' . $payroll->employee->last_name,
-                'department_name' => optional($payroll->employee->department)->name,
-                'profile_picture' => $payroll->employee->profile_picture
+                'employee_full_name' => "{$payroll->employee->first_name} {$payroll->employee->last_name}",
+                'month' => $payroll->month,
+                'salary' => $payroll->employee->salary,
+                'month_days' => $payroll->month_days,
+                'attended_days' => $payroll->attended_days,
+                'absent_days' => $payroll->absent_days,
+                'total_overtime' => $payroll->total_overtime,
+                'total_bonus_amount' => $payroll->total_bonus_amount,
+                'total_late_hours' => $payroll->total_late_hours,
+                'total_deduction_amount' => $payroll->total_deduction_amount,
+                'net_salary' => $payroll->net_salary,
+                'absence_deduction_amount' => $payroll->absence_deduction_amount,
+                'late_deduction_amount' => $payroll->late_deduction_amount,
             ];
         });
 
@@ -101,7 +107,8 @@ public function allPayrolls()
         ]);
     }
 
-    // Recalculate payroll for specific employee and month
+    // باقي دوالك زي recalculate موجودة فعلاً بدون تعديل...
+    
     public function recalculate(Request $request)
     {
         $request->validate([
@@ -177,7 +184,6 @@ public function allPayrolls()
         ]);
     }
 
-    // Calculate late deductions
     private function calculateDeduction($totalLate, $deduction_type, $deduction_value, $salaryPerHour)
     {
         if ($deduction_type == 'money') {
@@ -186,7 +192,6 @@ public function allPayrolls()
         return $totalLate * $deduction_value * $salaryPerHour;
     }
 
-    // Calculate overtime bonus
     private function calculateOvertime($totalOvertime, $overtime_type, $overtime_value, $salaryPerHour)
     {
         if ($overtime_type == 'money') {
@@ -195,10 +200,8 @@ public function allPayrolls()
         return $totalOvertime * $overtime_value * $salaryPerHour;
     }
 
-    // Round values to 2 decimal places
     private function round2($value)
     {
         return bcadd($value, '0', 2);
     }
-
-}
+} 

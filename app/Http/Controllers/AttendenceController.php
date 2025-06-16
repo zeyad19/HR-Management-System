@@ -45,7 +45,7 @@ public function index(Request $request)
             'employee' => [
                 'id' => $attendance->employee->id,
                 'full_name' => $attendance->employee->full_name,
-                'profile_picture_url' => $attendance->employee->profile_image_url, // هنا
+                'profile_picture_url' => $attendance->employee->profile_image_url, 
                 'email' => $attendance->employee->email,
                 'dept_name' => $attendance->employee->dept_name,
             ]
