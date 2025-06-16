@@ -1,0 +1,9 @@
+ body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f3f4f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
