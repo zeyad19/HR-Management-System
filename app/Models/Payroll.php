@@ -23,7 +23,7 @@ class Payroll extends Model
         'absence_deduction_amount',
         'total_bonus_amount',
         'net_salary',
-        'salary_per_hour', // Add this
+        'salary_per_hour', 
     ];
 
     public function employee()

@@ -37,7 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/all-employees-data', [PayrollController::class, 'allEmployeesData']);
     
     Route::post('/recalculate', [PayrollController::class, 'recalculate']);
-    Route::get('/all', [PayrollController::class, 'allPayrolls']); // الجديد هنا
+    Route::get('/all', [PayrollController::class, 'allPayrolls']); 
 });
 
 Route::get('/payroll/verify/{employee_id}/{month}', [PayrollController::class, 'verifyPayrollApi']);
