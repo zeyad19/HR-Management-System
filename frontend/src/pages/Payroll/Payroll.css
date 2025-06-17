@@ -1,0 +1,197 @@
+/* Glass Card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid transparent;
+  border-image: linear-gradient(45deg, #007bff, #4a90e2) 1;
+  border-radius: 0.8rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 60px;
+  text-align: center;
+
+}
+
+.glass-card:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.2);
+}
+
+/* Modal Dialog */
+.compact-modal .modal-dialog {
+  max-width: 80vw;
+  width: 100%;
+  margin: 5vh auto;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  position: relative; /* تأكد إنه مش fixed */
+}
+
+/* Modal Content */
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: none;
+  border-radius: 1rem;
+  overflow: visible !important;
+  height: auto !important;
+  max-height: none !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Modal Body */
+.modal-body {
+  flex: initial; /* أو unset */
+  overflow: visible !important;
+  padding: 1rem;
+  background: #ffffff;
+}
+
+/* لو عايز تخلي Scroll يظهر في الشاشة كلها (مش جوا المودال) */
+body.modal-open {
+  overflow-y: auto !important;
+}
+
+/* Modal Header */
+.modal-header {
+  background: linear-gradient(45deg, #007bff, #4a90e2);
+  border-bottom: none;
+  padding: 0.8rem 1.2rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.modal-header .btn-close {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.modal-header .btn-close:hover {
+  transform: rotate(90deg);
+}
+
+
+
+/* Modal Footer */
+.modal-footer {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border-top: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0 0 1rem 1rem;
+  flex-shrink: 0;
+}
+
+/* Footer Button */
+.footer-btn {
+  background: linear-gradient(45deg, #007bff, #4a90e2);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.4rem 1.5rem;
+  color: white;
+  font-size: 0.9rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.footer-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Navbar */
+.navbar {
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  transition: all 0.3s ease;
+  width: 220px;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  padding-top: 20px;
+  height: 100vh;
+}
+
+/* Navbar Link */
+.navbar-link {
+  display: block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.4rem;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.navbar-link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateX(5px);
+}
+
+/* Section Divider */
+.section-divider {
+  border-top: 1px solid rgba(0, 123, 255, 0.3);
+  margin: 0.8rem 0;
+}
+
+/* Slide-in Animation */
+.slide-in {
+  animation: slideIn 0.3s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-in:nth-child(1) { animation-delay: 0.03s; }
+.slide-in:nth-child(2) { animation-delay: 0.06s; }
+.slide-in:nth-child(3) { animation-delay: 0.09s; }
+.slide-in:nth-child(4) { animation-delay: 0.12s; }
+.slide-in:nth-child(5) { animation-delay: 0.15s; }
+.slide-in:nth-child(6) { animation-delay: 0.18s; }
+.slide-in:nth-child(7) { animation-delay: 0.21s; }
+
+/* Search Input */
+.search-input {
+  max-width: 300px;
+  border-color: #007bff;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Employee Avatar */
+.employee-avatar {
+  border-radius: 50%;
+  border: 1px solid #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+  width: 32px;
+  height: 32px;
+}
+
+/* Employee Profile Avatar */
+.employee-profile-avatar {
+  border-radius: 50%;
+  border: 3px solid #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+  width: 80px;
+  height: 80px;
+}
+
+/* Modal Content Scaled */
+.modal-content-scaled {
+  transform: scale(0.95);
+  transform-origin: top center;
+}
+
+
+/* استجابة في الشاشات الصغيرة */
+@media (max-height: 600px) {
+  .modal-body {
+    overflow-y: auto;
+    max-height: 60vh;
+  }
+}
