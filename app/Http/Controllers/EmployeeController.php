@@ -231,7 +231,7 @@ public function destroy($id)
 
         $query = $request->input('query');
 
-        $employees = Employee::whereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$query}%"])
+        $employees = Employee::whereRaw("CONCAT(first_name, '', last_name) LIKE ?", ["%{$query}%"])
             ->orWhere('national_id', 'like', "%{$query}%")
             ->with('department')
             ->paginate(10);

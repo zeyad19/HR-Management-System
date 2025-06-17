@@ -23,9 +23,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/dashboard', fn() => response()->json(['message' => 'Welcome HR']));
 
     // Employees routes
-    Route::apiResource('employees', EmployeeController::class);
-    Route::get('/employees/search', [EmployeeController::class, 'search']);
+     Route::get('/employees/search', [EmployeeController::class, 'search']);
 
+    Route::apiResource('employees', EmployeeController::class);
+   
 
     // Attendances routes
     Route::apiResource('attendances', AttendenceController::class);

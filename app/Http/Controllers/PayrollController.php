@@ -77,7 +77,8 @@ public function allEmployeesData()
                         ->orWhere('last_name', 'like', "%{$request->employee_name}%");
                 });
             })
-            ->when($request->start_date && $request->end_date, fn($q) => $q->whereBetween('created_at', [$request->start_date, $request->end_date]))
+            ->when($request->start_date && $request->end_date, fn($q) => $q->whereBetween('created_at', 
+            [$request->start_date, $request->end_date]))
             ->get();
 
         $data = $payrolls->map(function ($payroll) {
