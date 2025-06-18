@@ -4,30 +4,80 @@
   backdrop-filter: blur(8px);
   border: 1px solid transparent;
   border-image: linear-gradient(45deg, #007bff, #4a90e2) 1;
-  border-radius: 0.8rem;
+  border-radius: 1rem;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  min-height: 60px;
+  min-height: 80px; /* Larger cards */
   text-align: center;
-
+  padding: 1.2rem; /* Increased padding for larger appearance */
 }
 
 .glass-card:hover {
   transform: translateY(-2px) scale(1.03);
   box-shadow: 0 8px 20px rgba(0, 123, 255, 0.2);
 }
+.employee-profile-avatar {
+  width: 120px;    /* بدلاً من الحجم الحالي */
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.employee-name {
+  font-size: 1.5rem; /* كبر حجم الخط للعنوان */
+  font-weight: 700;
+  color: #0d6efd; /* نفس لون الـ text-primary */
+  margin-top: 0.5rem;
+}
+
+.employee-badge {
+  font-size: 1.1rem; /* كبر شوية حجم الخط */
+  padding: 0.4em 0.8em;
+}
+
+/* Text clarity improvements */
+.glass-card h6 {
+  font-size: 1.25rem !important; /* Larger for clarity */
+  font-weight: 700 !important; /* Bolder for readability */
+  margin-bottom: 0.6rem; /* Spacing below heading */
+  color: #333; /* Darker for contrast */
+}
+
+.glass-card p {
+  font-size: 1.77rem !important; /* Larger for clarity */
+  font-weight: 500 !important; /* Medium weight for legibility */
+  margin-bottom: 0;
+  color: #1a1a1a; /* Darker for contrast */
+}
+
+/* Preserve original text colors */
+.glass-card p.text-success {
+  color: #28a745;
+}
+
+.glass-card p.text-danger {
+  color: #dc3545;
+}
+
+.glass-card p.text-info {
+  color: #17a2b8;
+}
+
+.glass-card p.text-primary {
+  color: #007bff;
+}
 
 /* Modal Dialog */
 .compact-modal .modal-dialog {
   max-width: 80vw;
   width: 100%;
-  margin: 5vh auto;
-  margin-top: 10px;
+  margin: 2vh auto; /* Reduced to save space */
   display: flex;
   flex-direction: column;
-  height: auto !important;
-  max-height: none !important;
-  overflow: visible !important;
-  position: relative; /* تأكد إنه مش fixed */
+  height: auto;
+  max-height: 90vh; /* Prevent overflow */
+  overflow: visible;
+  position: relative;
 }
 
 /* Modal Content */
@@ -38,23 +88,18 @@
   backdrop-filter: blur(10px);
   border: none;
   border-radius: 1rem;
-  overflow: visible !important;
-  height: auto !important;
-  max-height: none !important;
+  overflow: hidden; /* Prevent internal scroll */
+  height: auto;
+  max-height: 90vh;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* Modal Body */
 .modal-body {
-  flex: initial; /* أو unset */
-  overflow: visible !important;
-  padding: 1rem;
+  flex: initial;
+  overflow: visible;
+  padding: 0.8rem; /* Reduced padding */
   background: #ffffff;
-}
-
-/* لو عايز تخلي Scroll يظهر في الشاشة كلها (مش جوا المودال) */
-body.modal-open {
-  overflow-y: auto !important;
 }
 
 /* Modal Header */
@@ -75,8 +120,6 @@ body.modal-open {
 .modal-header .btn-close:hover {
   transform: rotate(90deg);
 }
-
-
 
 /* Modal Footer */
 .modal-footer {
@@ -110,7 +153,7 @@ body.modal-open {
   border-bottom-right-radius: 1rem;
   transition: all 0.3s ease;
   width: 220px;
-  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   padding-top: 20px;
@@ -133,7 +176,7 @@ body.modal-open {
 /* Section Divider */
 .section-divider {
   border-top: 1px solid rgba(0, 123, 255, 0.3);
-  margin: 0.8rem 0;
+  margin: 0.5rem 0; /* Reduced to save space */
 }
 
 /* Slide-in Animation */
@@ -143,17 +186,37 @@ body.modal-open {
 }
 
 @keyframes slideIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.slide-in:nth-child(1) { animation-delay: 0.03s; }
-.slide-in:nth-child(2) { animation-delay: 0.06s; }
-.slide-in:nth-child(3) { animation-delay: 0.09s; }
-.slide-in:nth-child(4) { animation-delay: 0.12s; }
-.slide-in:nth-child(5) { animation-delay: 0.15s; }
-.slide-in:nth-child(6) { animation-delay: 0.18s; }
-.slide-in:nth-child(7) { animation-delay: 0.21s; }
+.slide-in:nth-child(1) {
+  animation-delay: 0.03s;
+}
+.slide-in:nth-child(2) {
+  animation-delay: 0.06s;
+}
+.slide-in:nth-child(3) {
+  animation-delay: 0.09s;
+}
+.slide-in:nth-child(4) {
+  animation-delay: 0.12s;
+}
+.slide-in:nth-child(5) {
+  animation-delay: 0.15s;
+}
+.slide-in:nth-child(6) {
+  animation-delay: 0.18s;
+}
+.slide-in:nth-child(7) {
+  animation-delay: 0.21s;
+}
 
 /* Search Input */
 .search-input {
@@ -187,11 +250,43 @@ body.modal-open {
   transform-origin: top center;
 }
 
+/* Optimize row spacing */
+.row.g-2 {
+  margin-bottom: 0.5rem; /* Reduced to save space */
+}
 
-/* استجابة في الشاشات الصغيرة */
+/* Ensure no scroll on body */
+body.modal-open {
+  overflow-y: auto !important;
+}
+
+/* Responsive adjustments for smaller screens */
 @media (max-height: 600px) {
+  .modal-dialog {
+    max-height: 85vh;
+  }
+
+  .glass-card {
+    min-height: 70px; /* Slightly smaller for low-height screens */
+    padding: 1rem;
+  }
+
+  .glass-card h6 {
+    font-size: 0.95rem; /* Clear but adjusted for smaller screens */
+    font-weight: 700;
+  }
+
+  .glass-card p {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
   .modal-body {
-    overflow-y: auto;
-    max-height: 60vh;
+    padding: 0.6rem; /* Reduced padding */
+  }
+
+  .section-divider {
+    margin: 0.4rem 0; /* Reduced margin */
   }
 }
+

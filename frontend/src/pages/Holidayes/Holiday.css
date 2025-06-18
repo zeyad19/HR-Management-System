@@ -1,0 +1,187 @@
+/* Wrapper for entire holidays page */
+.holiday-page-wrapper {
+  background: linear-gradient(135deg, #dbeafe, #f8fafc);
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 2rem 1rem;
+}
+
+/* Card base style for glass effect */
+.holiday-glass-card {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 1.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.holiday-glass-card:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+}
+
+/* Modal overlay and content */
+.holiday-modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.holiday-modal-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border-radius: 15px;
+  max-width: 420px;
+  width: 90%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Headings and text */
+.holiday-section-title {
+  font-weight: 800;
+  font-size: 2.2rem;
+  color: #0a3d62;
+  text-align: center;
+  letter-spacing: 1px;
+  margin-bottom: 2rem;
+}
+
+.holiday-card-title {
+  font-weight: 700;
+  color: #0a3d62;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.holiday-date-short,
+.holiday-date-full {
+  font-size: 1rem;
+  color: #444;
+  text-align: center;
+  user-select: none;
+}
+
+.holiday-alert-message {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #555;
+  border-radius: 12px;
+  background-color: #f0f4f8;
+  padding: 1rem 1.25rem;
+}
+
+/* Form styles */
+.holiday-form-label {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #0a3d62;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.holiday-form-control {
+  border-radius: 14px;
+  border: 2px solid #a3bffa;
+  padding: 0.75rem 1rem;
+  font-size: 1.1rem;
+  width: 100%;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.glass-form-card {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  padding: 3rem 3.5rem;
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
+  margin: 0 auto;
+  max-width: 550px;
+}
+
+.glass-form-card:hover {
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+  transform: translateY(-6px);
+}
+
+/* Buttons */
+.holiday-btn-primary {
+  background-color: #10579e;
+  border-color: #003366;
+  font-weight: 700;
+  font-size: 1.2rem;
+  padding: 0.85rem 1.5rem;
+  border-radius: 12px;
+  width: 100%;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 51, 102, 0.4);
+  cursor: pointer;
+}
+
+.holiday-btn-primary:hover {
+  background-color: #00509e;
+  border-color: #00509e;
+  box-shadow: 0 6px 20px rgba(0, 80, 158, 0.6);
+}
+
+.holiday-btn-outline-danger:hover {
+  background-color: #a30000;
+  color: #fff;
+  border-color: #a30000;
+}
+
+.holiday-btn-outline-primary:hover {
+  background-color: #0a3d62;
+  color: #fff;
+  border-color: #0a3d62;
+}
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+  .holiday-glass-card {
+    padding: 1rem;
+  }
+
+  .holiday-card-title {
+    font-size: 1rem;
+  }
+
+  .holiday-date-short,
+  .holiday-date-full {
+    font-size: 0.9rem;
+  }
+
+  .holiday-section-title {
+    font-size: 1.8rem;
+  }
+
+  .holiday-form-label {
+    font-size: 1rem;
+  }
+
+  .holiday-form-control {
+    font-size: 1rem;
+  }
+
+  .holiday-btn-primary {
+    font-size: 1.05rem;
+    padding: 0.75rem 1.25rem;
+  }
+}

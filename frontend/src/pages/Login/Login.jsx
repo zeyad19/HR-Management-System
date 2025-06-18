@@ -30,7 +30,7 @@ const Login = () => {
     try {
       const response = await api.post("hr/login", { email, password });
       localStorage.setItem("token", response.data.token);
-      navigate("/payroll");
+      navigate("/holidays");
     } catch (error) {
       setErrors({
         email: "Invalid email or password.",

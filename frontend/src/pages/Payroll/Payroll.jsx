@@ -71,22 +71,7 @@ export default function PayrollTable() {
 
   return (
     <div className="d-flex" style={{ minHeight: "100vh" }}>
-      <aside className="bg-primary text-white p-3 navbar">
-        <h4 className="mb-4 text-center">Dashboard</h4>
-        <nav>
-          <ul className="list-unstyled">
-            <li className="mb-2">
-              <a href="#" className="text-white text-decoration-none navbar-link">Home</a>
-            </li>
-            <li className="mb-2">
-              <a href="#" className="text-white text-decoration-none navbar-link">Employees</a>
-            </li>
-            <li className="mb-2">
-              <a href="#" className="text-white text-decoration-none navbar-link">Payroll</a>
-            </li>
-          </ul>
-        </nav>
-      </aside>
+     
 
       <main className="flex-grow-1 p-4 bg-light">
         <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
@@ -186,22 +171,7 @@ export default function PayrollTable() {
                   <Badge bg="primary" className="fs-6">{selectedEmployee.dep_name ?? "No Department"}</Badge>
                 </div>
 
-                <div className="section-divider" />
-                <h5 className="fw-bold text-primary mb-2 fs-6">Personal Information</h5>
-                <div className="row g-2 mb-3">
-                  <div className="col-12 col-md-6 slide-in">
-                    <Card className="glass-card p-2">
-                      <h6 className="mb-0 fs-6 fw-bold">Gender</h6>
-                      <p className="mb-0 fs-6">{selectedEmployee.gender ?? "Not Specified"}</p>
-                    </Card>
-                  </div>
-                  <div className="col-12 col-md-6 slide-in">
-                    <Card className="glass-card p-2">
-                      <h6 className="mb-0 fs-6 fw-bold">Nationality</h6>
-                      <p className="mb-0 fs-6">{selectedEmployee.nationality ?? "Not Specified"}</p>
-                    </Card>
-                  </div>
-                </div>
+                
 
                 <div className="section-divider" />
                 <h5 className="fw-bold text-primary mb-2 fs-6">Work Details</h5>
@@ -238,82 +208,79 @@ export default function PayrollTable() {
                   </div>
                 </div>
 
-                <div className="section-divider" />
-                <h5 className="fw-bold text-primary mb-2 fs-6">Compensation Settings</h5>
-                <div className="row g-2 mb-3">
-                  <div className="col-12 col-md-4 slide-in">
-                    <Card className="glass-card p-2">
-                      <h6 className="mb-0 fs-6 fw-bold">Deduction Type</h6>
-                      <p className="mb-0 fs-6">{selectedEmployee.general_settings?.deduction_type ?? "Not Specified"}</p>
-                    </Card>
-                  </div>
-                  <div className="col-12 col-md-4 slide-in">
-                    <Card className="glass-card p-2">
-                      <h6 className="mb-0 fs-6 fw-bold">Deduction Value</h6>
-                      <p className="mb-0 fs-6">{selectedEmployee.general_settings?.deduction_value ?? "0"} EGP</p>
-                    </Card>
-                  </div>
-                  <div className="col-12 col-md-4 slide-in">
-                    <Card className="glass-card p-2">
-                      <h6 className="mb-0 fs-6 fw-bold">Overtime Type</h6>
-                      <p className="mb-0 fs-6">{selectedEmployee.general_settings?.overtime_type ?? "Not Specified"}</p>
-                    </Card>
-                  </div>
-                  <div className="col-12 slide-in">
-                    <Card className="glass-card p-2">
-                      <h6 className="mb-0 fs-6 fw-bold">Weekend Days</h6>
-                      <p className="mb-0 fs-6">{formatWeekendDays(selectedEmployee.general_settings?.weekend_days)}</p>
-                    </Card>
-                  </div>
-                </div>
+              <div className="section-divider" />
+<h5 className="fw-bold text-primary mb-2 fs-6">Payroll Summary</h5>
+<div className="row g-2 mb-3">
 
-                <div className="section-divider" />
-                <h5 className="fw-bold text-primary mb-2 fs-6">Payroll Summary</h5>
-                <div className="row g-2 mb-3">
-                  <div className="col-12 col-md-4 slide-in">
-                    <Card className="glass-card p-2">
-                      <h6 className="mb-0 fs-6 fw-bold">Month Days</h6>
-                      <p className="mb-0 fs-6">{selectedEmployee.payroll?.month_days ?? "N/A"}</p>
-                    </Card>
-                  </div>
-                  <div className="col-12 col-md-4 slide-in">
-                    <Card className="glass-card p-2">
-                     вью
-                      <h6 className="mb-0 fs-6 fw-bold">Attendance</h6>
-                      <p className="mb-0 fs-6">{selectedEmployee.payroll?.attended_days ?? "N/A"}</p>
-                    </Card>
-                  </div>
-                  <div className="col-12 col-md-4 slide-in">
-                    <Card className="glass-card p-2">
-                      <h6 className="mb-0 fs-6 fw-bold">Absence</h6>
-                      <p className="mb-0 fs-6">{selectedEmployee.payroll?.absent_days ?? "N/A"}</p>
-                    </Card>
-                  </div>
-                  <div className="col-12 col-md-4 slide-in">
-                    <Card className="glass-card p-2">
-                      <h6 className="mb-0 fs-6 fw-bold">Late Deduction</h6>
-                      <p className="mb-0 fs-6">{selectedEmployee.payroll?.late_deduction_amount ?? "N/A"} EGP</p>
-                    </Card>
-                  </div>
-                  <div className="col-12 col-md-4 slide-in">
-                    <Card className="glass-card p-2">
-                      <h6 className="mb-0 fs-6 fw-bold">Bonus</h6>
-                      <p className="text-success mb-0 fs-6">{selectedEmployee.payroll?.total_bonus_amount ?? "N/A"} EGP</p>
-                    </Card>
-                  </div>
-                  <div className="col-12 col-md-4 slide-in">
-                    <Card className="glass-card p-2">
-                      <h6 className="mb-0 fs-6 fw-bold">Total Deduction</h6>
-                      <p className="text-danger mb-0 fs-6">{selectedEmployee.payroll?.total_deduction_amount ?? "N/A"} EGP</p>
-                    </Card>
-                  </div>
-                  <div className="col-12 slide-in">
-                    <Card className="glass-card p-2 bg-primary text-white">
-                      <h6 className="mb-0 fs-6 fw-bold">Net Salary</h6>
-                      <h4 className="fw-bold mb-0 fs-5">{selectedEmployee.payroll?.net_salary ?? "N/A"} EGP</h4>
-                    </Card>
-                  </div>
-                </div>
+  <div className="col-12 col-md-4 slide-in">
+    <Card className="glass-card p-2">
+      <h6 className="mb-0 fs-6 fw-bold">Month</h6>
+      <p className="mb-0 fs-6">{selectedEmployee.payroll?.month ?? "N/A"}</p>
+    </Card>
+  </div>
+
+  <div className="col-12 col-md-4 slide-in">
+    <Card className="glass-card p-2">
+      <h6 className="mb-0 fs-6 fw-bold">Month Days</h6>
+      <p className="mb-0 fs-6">{selectedEmployee.payroll?.month_days ?? "N/A"}</p>
+    </Card>
+  </div>
+
+  <div className="col-12 col-md-4 slide-in">
+    <Card className="glass-card p-2">
+      <h6 className="mb-0 fs-6 fw-bold">Attendance</h6>
+      <p className="mb-0 fs-6">{selectedEmployee.payroll?.attended_days ?? "N/A"}</p>
+    </Card>
+  </div>
+
+  <div className="col-12 col-md-4 slide-in">
+    <Card className="glass-card p-2">
+      <h6 className="mb-0 fs-6 fw-bold">Absence</h6>
+      <p className="mb-0 fs-6">{selectedEmployee.payroll?.absent_days ?? "N/A"}</p>
+    </Card>
+  </div>
+
+
+
+  <div className="col-12 col-md-4 slide-in">
+    <Card className="glass-card p-2">
+      <h6 className="mb-0 fs-6 fw-bold">Bonus</h6>
+      <p className="text-success mb-0 fs-6">{selectedEmployee.payroll?.total_bonus_amount ?? "N/A"} EGP</p>
+    </Card>
+  </div>
+
+  <div className="col-12 col-md-4 slide-in">
+    <Card className="glass-card p-2">
+      <h6 className="mb-0 fs-6 fw-bold">Late Deduction</h6>
+      <p className="mb-0 fs-6">{selectedEmployee.payroll?.late_deduction_amount ?? "N/A"} EGP</p>
+    </Card>
+  </div>
+
+ 
+
+  <div className="col-12 col-md-4 slide-in">
+    <Card className="glass-card p-2">
+      <h6 className="mb-0 fs-6 fw-bold">Absence Deduction</h6>
+      <p className="mb-0 fs-6">{selectedEmployee.payroll?.absence_deduction_amount ?? "N/A"} EGP</p>
+    </Card>
+  </div>
+
+  <div className="col-12 col-md-4 slide-in">
+    <Card className="glass-card p-2">
+      <h6 className="mb-0 fs-6 fw-bold">Total Deduction</h6>
+      <p className="text-danger mb-0 fs-6">{selectedEmployee.payroll?.total_deduction_amount ?? "N/A"} EGP</p>
+    </Card>
+  </div>
+
+  <div className="col-12 slide-in">
+    <Card className="glass-card p-2 bg-primary text-white">
+      <h6 className="mb-0 fs-6 fw-bold">Net Salary</h6>
+      <h4 className="fw-bold mb-0 fs-5">{selectedEmployee.payroll?.net_salary ?? "N/A"} EGP</h4>
+    </Card>
+  </div>
+
+</div>
+
               </div>
             ) : (
               <p>Loading employee data...</p>
