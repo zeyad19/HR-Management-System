@@ -1,0 +1,17 @@
+.profile-image-upload {
+  margin-bottom: 1rem;
+}
+
+.image-preview {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.image-preview img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover; /* Keeps aspect ratio, crops if needed */
+  border-radius: 8px; /* Optional: adds rounded corners */
+  border: 1px solid #ddd; /* Optional: adds a border */
+}
