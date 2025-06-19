@@ -1,0 +1,292 @@
+/* Glass Card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid transparent;
+  border-image: linear-gradient(45deg, #007bff, #4a90e2) 1;
+  border-radius: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 80px; /* Larger cards */
+  text-align: center;
+  padding: 1.2rem; /* Increased padding for larger appearance */
+}
+
+.glass-card:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.2);
+}
+.employee-profile-avatar {
+  width: 120px;    /* بدلاً من الحجم الحالي */
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.employee-name {
+  font-size: 1.5rem; /* كبر حجم الخط للعنوان */
+  font-weight: 700;
+  color: #0d6efd; /* نفس لون الـ text-primary */
+  margin-top: 0.5rem;
+}
+
+.employee-badge {
+  font-size: 1.1rem; /* كبر شوية حجم الخط */
+  padding: 0.4em 0.8em;
+}
+
+/* Text clarity improvements */
+.glass-card h6 {
+  font-size: 1.25rem !important; /* Larger for clarity */
+  font-weight: 700 !important; /* Bolder for readability */
+  margin-bottom: 0.6rem; /* Spacing below heading */
+  color: #333; /* Darker for contrast */
+}
+
+.glass-card p {
+  font-size: 1.77rem !important; /* Larger for clarity */
+  font-weight: 500 !important; /* Medium weight for legibility */
+  margin-bottom: 0;
+  color: #1a1a1a; /* Darker for contrast */
+}
+
+/* Preserve original text colors */
+.glass-card p.text-success {
+  color: #28a745;
+}
+
+.glass-card p.text-danger {
+  color: #dc3545;
+}
+
+.glass-card p.text-info {
+  color: #17a2b8;
+}
+
+.glass-card p.text-primary {
+  color: #007bff;
+}
+
+/* Modal Dialog */
+.compact-modal .modal-dialog {
+  max-width: 80vw;
+  width: 100%;
+  margin: 2vh auto; /* Reduced to save space */
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  max-height: 90vh; /* Prevent overflow */
+  overflow: visible;
+  position: relative;
+}
+
+/* Modal Content */
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: none;
+  border-radius: 1rem;
+  overflow: hidden; /* Prevent internal scroll */
+  height: auto;
+  max-height: 90vh;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Modal Body */
+.modal-body {
+  flex: initial;
+  overflow: visible;
+  padding: 0.8rem; /* Reduced padding */
+  background: #ffffff;
+}
+
+/* Modal Header */
+.modal-header {
+  background: linear-gradient(45deg, #007bff, #4a90e2);
+  border-bottom: none;
+  padding: 0.8rem 1.2rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.modal-header .btn-close {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.modal-header .btn-close:hover {
+  transform: rotate(90deg);
+}
+
+/* Modal Footer */
+.modal-footer {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border-top: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0 0 1rem 1rem;
+  flex-shrink: 0;
+}
+
+/* Footer Button */
+.footer-btn {
+  background: linear-gradient(45deg, #007bff, #4a90e2);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.4rem 1.5rem;
+  color: white;
+  font-size: 0.9rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.footer-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Navbar */
+.navbar {
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  transition: all 0.3s ease;
+  width: 220px;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  padding-top: 20px;
+  height: 100vh;
+}
+
+/* Navbar Link */
+.navbar-link {
+  display: block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.4rem;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.navbar-link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateX(5px);
+}
+
+/* Section Divider */
+.section-divider {
+  border-top: 1px solid rgba(0, 123, 255, 0.3);
+  margin: 0.5rem 0; /* Reduced to save space */
+}
+
+/* Slide-in Animation */
+.slide-in {
+  animation: slideIn 0.3s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in:nth-child(1) {
+  animation-delay: 0.03s;
+}
+.slide-in:nth-child(2) {
+  animation-delay: 0.06s;
+}
+.slide-in:nth-child(3) {
+  animation-delay: 0.09s;
+}
+.slide-in:nth-child(4) {
+  animation-delay: 0.12s;
+}
+.slide-in:nth-child(5) {
+  animation-delay: 0.15s;
+}
+.slide-in:nth-child(6) {
+  animation-delay: 0.18s;
+}
+.slide-in:nth-child(7) {
+  animation-delay: 0.21s;
+}
+
+/* Search Input */
+.search-input {
+  max-width: 300px;
+  border-color: #007bff;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Employee Avatar */
+.employee-avatar {
+  border-radius: 50%;
+  border: 1px solid #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+  width: 32px;
+  height: 32px;
+}
+
+/* Employee Profile Avatar */
+.employee-profile-avatar {
+  border-radius: 50%;
+  border: 3px solid #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+  width: 80px;
+  height: 80px;
+}
+
+/* Modal Content Scaled */
+.modal-content-scaled {
+  transform: scale(0.95);
+  transform-origin: top center;
+}
+
+/* Optimize row spacing */
+.row.g-2 {
+  margin-bottom: 0.5rem; /* Reduced to save space */
+}
+
+/* Ensure no scroll on body */
+body.modal-open {
+  overflow-y: auto !important;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-height: 600px) {
+  .modal-dialog {
+    max-height: 85vh;
+  }
+
+  .glass-card {
+    min-height: 70px; /* Slightly smaller for low-height screens */
+    padding: 1rem;
+  }
+
+  .glass-card h6 {
+    font-size: 0.95rem; /* Clear but adjusted for smaller screens */
+    font-weight: 700;
+  }
+
+  .glass-card p {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .modal-body {
+    padding: 0.6rem; /* Reduced padding */
+  }
+
+  .section-divider {
+    margin: 0.4rem 0; /* Reduced margin */
+  }
+}
+

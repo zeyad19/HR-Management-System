@@ -1,0 +1,191 @@
+/* General Page Styles */
+.login-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #e6f3ff 0%, #f0f4f8 100%); /* Aligned with dashboard's light background */
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  animation: modalPop 0.4s ease-out;
+}
+
+/* Login Container - Glassmorphic Style */
+.login-container {
+  /* Updated to use #007bff as primary color for border gradient */
+  background: rgba(255, 255, 255, 0.1); /* Glassmorphism effect to match dashboard cards */
+  backdrop-filter: blur(8px);
+  padding: 40px 35px;
+  border-radius: 0.8rem;
+  border: 1px solid transparent;
+  border-image: linear-gradient(45deg, #007bff, #4a90e2) 1; /* Updated to use shades of #007bff */
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.2);
+  width: 450px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-container:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(0, 123, 255, 0.3); /* Enhanced shadow on hover */
+}
+
+/* Logo Icon */
+.logo-icon {
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(45deg, #007bff, #4a90e2); /* Updated to use shades of #007bff */
+  border-radius: 3px;
+  margin: 0 auto 15px;
+  transition: transform 0.3s ease;
+}
+
+.logo-icon:hover {
+  transform: scale(1.1); /* Added subtle hover effect */
+}
+
+/* Title with Gradient Text */
+.login-container h3 {
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+  font-weight: 700;
+  background: linear-gradient(45deg, #007bff, #4a90e2); /* Updated to use shades of #007bff */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Form */
+form {
+  text-align: left;
+}
+
+/* Labels */
+label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+  color: #333;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+label:hover {
+  color: #007bff; /* Added hover effect to match primary color */
+}
+
+/* Input Fields */
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  background: rgba(255, 255, 255, 0.15); /* Transparent to match glassmorphism */
+  border: 1px solid rgba(0, 123, 255, 0.3); /* Matches #007bff with transparency */
+  border-radius: 0.5rem;
+  font-size: 1.1rem;
+  color: #333;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #007bff; /* Primary color */
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+  outline: none;
+}
+
+input::placeholder {
+  color: #888; /* Darker for better readability */
+}
+
+/* Password Row */
+.password-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  font-size: 0.95rem;
+}
+
+/* Links */
+.password-row a,
+.register a,
+.login-container a {
+  color: #007bff; /* Updated to primary color */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.password-row a:hover,
+.register a:hover,
+.login-container a:hover {
+  color: #4a90e2; /* Lighter shade of #007bff for hover */
+}
+
+/* Remember Row */
+.remember-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 20px 0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* Login Button */
+.login-button {
+  width: 100%;
+  background: linear-gradient(45deg, #007bff, #4a90e2); /* Updated to use shades of #007bff */
+  border: none;
+  color: white;
+  padding: 14px;
+  border-radius: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+/* Register Link */
+.register {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* Footer */
+footer {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #999;
+  border-top: 1px solid rgba(0, 123, 255, 0.3); /* Updated to match #007bff */
+  padding-top: 10px;
+}
+
+/* Error Text */
+.error-text {
+  font-size: 0.9rem;
+  color: #dc3545; /* Kept Bootstrap danger color for consistency */
+  margin-top: 5px;
+  margin-bottom: 10px;
+  display: block;
+  animation: fadeIn 0.3s ease-in;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}

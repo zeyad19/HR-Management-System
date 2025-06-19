@@ -1,0 +1,76 @@
+.sidebar {
+  width: 250px !important;
+  height: 100vh !important;
+  background-color: var(--bs-primary) !important;
+  color: white !important;
+  padding: 1rem !important;
+  border-top-right-radius: 20px !important;
+  border-bottom-right-radius: 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+}
+
+.sidebar h4 {
+  text-align: center !important;
+  margin-bottom: 1.5rem !important;
+  font-weight: bold !important;
+}
+
+.sidebar-menu {
+  display: flex !important;
+  flex-direction: column !important;
+}
+.nav-link.full-button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  padding: 14px 20px !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  backdrop-filter: blur(6px) !important;
+  color: white !important;
+  font-weight: 500 !important;
+  margin-bottom: 12px !important;
+  width: 100% !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+   margin-bottom: 26px !important;
+}
+
+.nav-link.full-button:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.nav-link.full-button.active {
+  background-color: white !important;
+  color: var(--bs-primary) !important;
+  border: 1px solid white !important;
+  font-weight: bold !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+
+.sidebar-menu .dropdown {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  margin-left: 1rem !important;
+  margin-top: 0.5rem !important;
+}
+
+.sidebar-user {
+  text-align: center !important;
+  padding-bottom: 20px !important;
+}
+
+.sidebar-user img {
+  width: 60px !important;
+  height: 60px !important;
+  object-fit: cover !important;
+  border-radius: 50% !important;
+  margin-bottom: 8px !important;
+}
